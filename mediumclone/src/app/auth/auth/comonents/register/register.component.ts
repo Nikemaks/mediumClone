@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {Store} from "@ngrx/store";
+import {select, Store} from "@ngrx/store";
 import {registerAction} from "../../store/actions/register.action";
+import {Observable} from "rxjs";
+import {isSubmittingSelector} from "../../store/selectors";
 
 @Component({
   selector: 'app-register',
@@ -9,6 +11,8 @@ import {registerAction} from "../../store/actions/register.action";
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit {
+
+  isSubmitting$!: Observable<boolean>
 
   form = this.fb.group({
     username: new FormControl('', Validators.required),
@@ -21,10 +25,17 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initializeValues();
   }
 
   onSubmit() {
     console.log(this.form.value);
     this.store.dispatch(registerAction(this.form.value));
+  }
+
+  private initializeValues(): void {
+    // @ts-ignore
+    this.isSubmitting$ = this.store.pipe(select(isSubmittingSelector));
+    console.log(this.isSubmitting$)
   }
 }
