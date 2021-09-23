@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {RegisterComponent} from './comonents/register/register.component';
 import {RouterModule, Routes} from "@angular/router";
 import {ReactiveFormsModule} from "@angular/forms";
+import {StoreModule} from "@ngrx/store";
+import {reducers} from "./store/reducers";
 
 
 const rotes: Routes = [
@@ -18,7 +20,8 @@ const rotes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(rotes),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature('auth', reducers)
   ]
 })
 export class AuthModule {
